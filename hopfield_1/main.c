@@ -185,11 +185,11 @@ void WriteNet(NET* Net)
    
   for (i=0; i<Y; i++) {
     for (j=0; j<X; j++) {
-      fprintf(ff, "%c", BINARY(Net->Output[i*X+j]) ? 'O' : ' ');
+      fprintf(ff, "%i", Net->Output[i*X+j]);
     }
   
        fprintf(ff, "\n");
-   
+  
   }
    if (!(i%2)){
        fprintf(ff, "%s","->");}
