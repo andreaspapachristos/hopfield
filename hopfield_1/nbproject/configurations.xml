@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>/home/maria/NetBeansProjects/hopfield_1/hopfield.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -36,6 +37,11 @@
       </toolsSet>
       <compileType>
       </compileType>
+      <item path="/home/maria/NetBeansProjects/hopfield_1/hopfield.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>
@@ -59,6 +65,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="/home/maria/NetBeansProjects/hopfield_1/hopfield.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
     </conf>

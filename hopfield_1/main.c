@@ -5,151 +5,7 @@
  * Created on 23 Απριλίου 2015, 11:13 μμ
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-typedef int           BOOL;
-typedef char          CHAR;
-typedef int           INT;
-
-#define FALSE         0
-#define TRUE          1
-#define NOT           !
-#define AND           &&
-#define OR            ||
-
-#define LO            -1
-#define HI            +1
-
-#define BINARY(x)     ((x)==LO ? FALSE : TRUE)
-#define BIPOLAR(x)    ((x)==FALSE ? LO : HI)
-
-
-typedef struct {                          /* A NET:                                */
-        INT           Units;                 /* - number of units in this net         */
-        INT*          Output;             /* - output of ith unit                  */
-        INT*          Threshold;        /* - threshold of ith unit               */
-        INT**         Weight;            /* - connection weights to ith unit      */
-} NET;
-#define NUM_DATA      5
-#define X             10
-#define Y             10
-
-#define N             (X * Y)
-
-CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O"  },
-
-                                                   { "OO  OO  OO",
-                                                     "OO  OO  OO",
-                                                     "  OO  OO  ",
-                                                     "  OO  OO  ",
-                                                     "OO  OO  OO",
-                                                     "OO  OO  OO",
-                                                     "  OO  OO  ",
-                                                     "  OO  OO  ",
-                                                     "OO  OO  OO",
-                                                     "OO  OO  OO"  },
-
-                                                   { "OOOOO     ",
-                                                     "OOOOO     ",
-                                                     "OOOOO     ",
-                                                     "OOOOO     ",
-                                                     "OOOOO     ",
-                                                     "     OOOOO",
-                                                     "     OOOOO",
-                                                     "     OOOOO",
-                                                     "     OOOOO",
-                                                     "     OOOOO"  },
-
-                                                   { "O  O  O  O",
-                                                     " O  O  O  ",
-                                                     "  O  O  O ",
-                                                     "O  O  O  O",
-                                                     " O  O  O  ",
-                                                     "  O  O  O ",
-                                                     "O  O  O  O",
-                                                     " O  O  O  ",
-                                                     "  O  O  O ",
-                                                     "O  O  O  O"  },
-
-                                                   { "OOOOOOOOOO",
-                                                     "O        O",
-                                                     "O OOOOOO O",
-                                                     "O O    O O",
-                                                     "O O OO O O",
-                                                     "O O OO O O",
-                                                     "O O    O O",
-                                                     "O OOOOOO O",
-                                                     "O        O",
-                                                     "OOOOOOOOOO"  } };
-
-CHAR                  Pattern_[NUM_DATA][Y][X] = { { "          ",
-                                                     "          ",
-                                                     "          ",
-                                                     "          ",
-                                                     "          ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O",
-                                                     "O O O O O ",
-                                                     " O O O O O"  },
-
-                                                   { "OOO O    O",
-                                                     " O  OOO OO",
-                                                     "  O O OO O",
-                                                     " OOO   O  ",
-                                                     "OO  O  OOO",
-                                                     " O OOO   O",
-                                                     "O OO  O  O",
-                                                     "   O OOO  ",
-                                                     "OO OOO  O ",
-                                                     " O  O  OOO"  },
-
-                                                   { "OOOOO     ",
-                                                     "O   O OOO ",
-                                                     "O   O OOO ",
-                                                     "O   O OOO ",
-                                                     "OOOOO     ",
-                                                     "     OOOOO",
-                                                     " OOO O   O",
-                                                     " OOO O   O",
-                                                     " OOO O   O",
-                                                     "     OOOOO"  },
-
-                                                   { "O  OOOO  O",
-                                                     "OO  OOOO  ",
-                                                     "OOO  OOOO ",
-                                                     "OOOO  OOOO",
-                                                     " OOOO  OOO",
-                                                     "  OOOO  OO",
-                                                     "O  OOOO  O",
-                                                     "OO  OOOO  ",
-                                                     "OOO  OOOO ",
-                                                     "OOOO  OOOO"  },
-
-                                                   { "OOOOOOOOOO",
-                                                     "O        O",
-                                                     "O        O",
-                                                     "O        O",
-                                                     "O   OO   O",
-                                                     "O   OO   O",
-                                                     "O        O",
-                                                     "O        O",
-                                                     "O        O",
-                                                     "OOOOOOOOOO"  } };
-
-INT                   Input [NUM_DATA][N];
-INT                   Input_[NUM_DATA][N];
-
-FILE*                 ff;
+#include "hopfield.h"
 
 void InitializeRandoms()
 {
@@ -157,7 +13,7 @@ void InitializeRandoms()
 }
 
 
-INT RandomEqualINT(INT Low, INT High)
+int RandomEqualINT(int Low, int High)
 {
   return rand() % (High-Low+1) + Low;
 }   
@@ -165,7 +21,7 @@ INT RandomEqualINT(INT Low, INT High)
 
 void InitializeApplication(NET* Net)
 {
-  INT n,i,j;
+  int n,i,j;
 
   for (n=0; n<NUM_DATA; n++) {
     for (i=0; i<Y; i++) {
@@ -181,7 +37,7 @@ void InitializeApplication(NET* Net)
 
 void WriteNet(NET* Net)
 {
-  INT i,j;
+  int i,j;
    
   for (i=0; i<Y; i++) {
     for (j=0; j<X; j++) {
@@ -204,24 +60,24 @@ void FinalizeApplication(NET* Net)
 
 void GenerateNetwork(NET* Net)
 {
-  INT i;
+  int i;
 
   Net->Units     = N;
-  Net->Output    = (INT*)  calloc(N, sizeof(INT));
-  Net->Threshold = (INT*)  calloc(N, sizeof(INT));
-  Net->Weight    = (INT**) calloc(N, sizeof(INT*));
+  Net->Output    = (int*)  calloc(N, sizeof(int));
+  Net->Threshold = (int*)  calloc(N, sizeof(int));
+  Net->Weight    = (int**) calloc(N, sizeof(int*));
 
   for (i=0; i<N; i++) {
     Net->Threshold[i] = 0;
-    Net->Weight[i]    = (INT*) calloc(N, sizeof(INT));
+    Net->Weight[i]    = (int*) calloc(N, sizeof(int));
   }
 }
 
 
 void CalculateWeights(NET* Net)
 {
-  INT i,j,n;
-  INT Weight;
+  int i,j,n;
+  int Weight;
 
   for (i=0; i<Net->Units; i++) {
     for (j=0; j<Net->Units; j++) {
@@ -237,9 +93,9 @@ void CalculateWeights(NET* Net)
 }
 
 
-void SetInput(NET* Net, INT* Input)
+void SetInput(NET* Net, int* Input)
 {
-  INT i;
+  int i;
    
   for (i=0; i<Net->Units; i++) {
     Net->Output[i] = Input[i];
@@ -248,19 +104,19 @@ void SetInput(NET* Net, INT* Input)
 }
 
 
-void GetOutput(NET* Net, INT* Output)
+void GetOutput(NET* Net, int* Output)
 {
-  INT i;
+  int i;
    
   for (i=0; i<Net->Units; i++) {
     Output[i] = Net->Output[i];
   }
   WriteNet(Net);
 }
-BOOL PropagateUnit(NET* Net, INT i)
+BOOL PropagateUnit(NET* Net, int i)
 {
-  INT  j;
-  INT  Sum, Out;
+  int  j;
+  int  Sum, Out;
   BOOL Changed;
 
   Changed = FALSE;
@@ -282,7 +138,7 @@ BOOL PropagateUnit(NET* Net, INT i)
 
 void PropagateNet(NET* Net)
 {
-  INT Iteration, IterationOfLastChange;
+  int Iteration, IterationOfLastChange;
 
   Iteration = 0;
   IterationOfLastChange = 0;
@@ -293,9 +149,9 @@ void PropagateNet(NET* Net)
   } while (Iteration-IterationOfLastChange < 10*Net->Units);
 }
 
-void SimulateNet(NET* Net, INT* Input)
+void SimulateNet(NET* Net, int* Input)
 {
-  INT Output[N];
+  int Output[N];
    
   SetInput(Net, Input);
   PropagateNet(Net);
@@ -306,7 +162,7 @@ void SimulateNet(NET* Net, INT* Input)
 int main(int argc, char** argv) {
     
   NET Net;
-  INT n;
+  int n;
 
   InitializeRandoms();
   GenerateNetwork(&Net);
@@ -322,6 +178,6 @@ int main(int argc, char** argv) {
    
   FinalizeApplication(&Net);
 
-    return (EXIT_SUCCESS);
+    return (0);
 }
 
