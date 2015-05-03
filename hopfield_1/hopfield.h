@@ -8,33 +8,34 @@
 #ifndef HOPFIELD_H
 #define	HOPFIELD_H
 #include <stdio.h>
+#include<stdbool.h>
 #ifdef	__cplusplus
 
 extern "C" {
 #endif
 
 typedef int           BOOL;
-typedef char          CHAR;
+typedef char        CHAR;
 typedef int           INT;
 
 #define FALSE         0
 #define TRUE          1
-#define NOT           !
+#define NOT            !
 #define AND           &&
-#define OR            ||
+#define OR               ||
 
-#define ASYNCHRINOUS     false //εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
+//εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
 
-#define LO            -1
-#define HI            +1
+#define LO                        -1
+#define HI                       +1
+#define UPDATING(x)     ((x)==FALSE ? 10: 100)
+#define BINARY(x)           ((x)==LO ? FALSE : TRUE)
+#define BIPOLAR(x)         ((x)==FALSE ? LO : HI)
+#define NUM_DATA         5
+#define X                         10
+#define Y                         10
 
-#define BINARY(x)     ((x)==LO ? FALSE : TRUE)
-#define BIPOLAR(x)    ((x)==FALSE ? LO : HI)
-#define NUM_DATA      5
-#define X             10
-#define Y             10
-
-#define N             (X * Y)
+#define N                           (X * Y)
 
 
 typedef struct {                          /* A NET:                                */
@@ -42,8 +43,10 @@ typedef struct {                          /* A NET:                             
         INT*          Output;             /* - output of ith unit                  */
         INT*          Threshold;        /* - threshold of ith unit               */
         INT**         Weight;            /* - connection weights to ith unit      */
+        INT*           Temp;
 } NET;
-
+bool  ASYNCHRONOUS=false;
+  //int temp[N];
 
 CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
                                                      " O O O O O",

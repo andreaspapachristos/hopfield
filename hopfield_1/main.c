@@ -41,15 +41,13 @@ void WriteNet(NET* Net)
    
   for (i=0; i<Y; i++) {
     for (j=0; j<X; j++) {
-      fprintf(ff, "%i", Net->Output[i*X+j]);
+      fprintf(ff, "%c", BINARY(Net->Output[i*X+j]) ? 'O' : ' ');
     }
   
        fprintf(ff, "\n");
   
   }
-   if (!(i%2)){
-       fprintf(ff, "%s","->");}
-  fprintf(ff, "\t");
+  fprintf(ff, "\n");
 
 }
 
@@ -66,10 +64,11 @@ void GenerateNetwork(NET* Net)
   Net->Output    = (int*)  calloc(N, sizeof(int));
   Net->Threshold = (int*)  calloc(N, sizeof(int));
   Net->Weight    = (int**) calloc(N, sizeof(int*));
-
+  Net->Temp     = (int*) calloc(N,sizeof(int));
   for (i=0; i<N; i++) {
     Net->Threshold[i] = 0;
     Net->Weight[i]    = (int*) calloc(N, sizeof(int));
+    
   }
 }
 
@@ -112,15 +111,17 @@ void GetOutput(NET* Net, int* Output)
     Output[i] = Net->Output[i];
   }
   WriteNet(Net);
+ // printf("%i",Output[i]);
 }
 BOOL PropagateUnit(NET* Net, int i)
 {
-  int  j;
+  int  j,f;
   int  Sum, Out;
   BOOL Changed;
 
   Changed = FALSE;
   Sum = 0;
+  if(ASYNCHRONOUS ){
   for (j=0; j<Net->Units; j++) {
     Sum += Net->Weight[i][j] * Net->Output[j];
   }
@@ -129,8 +130,34 @@ BOOL PropagateUnit(NET* Net, int i)
     if (Sum > Net->Threshold[i]) Out = HI;
     if (Out != Net->Output[i]) {
       Changed = TRUE;
-      Net->Output[i] = Out;
-    }
+      
+        Net->Output[i] = Out;
+         printf("%i", Out);
+      }
+  }
+  }
+      else{
+               // for (f=0;f<Net->Units;f++){
+               // Net->Temp[f]=Net->Output[f];}
+                    for (f=0; f< N;  f++) {Sum=0;
+                            for(j=0; j< N; j++) {
+                                    Sum += Net->Weight[f][j] * Net->Output[j];
+                                }
+                   if (Sum != Net->Threshold[f]) {
+                        if (Sum < Net->Threshold[f]) Out = LO;
+                        if (Sum > Net->Threshold[f]) Out = HI;
+                        if (Out != Net->Output[f]) {
+                             Changed = TRUE;
+                            Net->Temp[f]=Out;
+                            }
+                    }  
+                }
+
+     for (f=0;f<Net->Units;f++){
+         //Net->Output[f]=Net->Temp[f];
+         printf("%i", Net->Output[f]);
+         }
+          
   }
   return Changed;
 }
@@ -138,16 +165,33 @@ BOOL PropagateUnit(NET* Net, int i)
 
 void PropagateNet(NET* Net)
 {
-  int Iteration, IterationOfLastChange;
+  int Iteration, IterationOfLastChange,f;
 
   Iteration = 0;
   IterationOfLastChange = 0;
+   if(ASYNCHRONOUS){
   do {
     Iteration++;
     if (PropagateUnit(Net, RandomEqualINT(0, Net->Units-1)))
       IterationOfLastChange = Iteration;
-  } while (Iteration-IterationOfLastChange < 10*Net->Units);
+    }while (Iteration-IterationOfLastChange < 10*(Net->Units));
+   }
+    else{
+      // do{Iteration= FALSE;
+          for(f=0;f<Net->Units;f++){
+               Net->Temp[f]=Net->Output[f];
+          }
+             if (PropagateUnit(Net, N)){ 
+                // Iteration=TRUE;
+                     for (f=0;f<Net->Units;f++){
+                        Net->Output[f]=Net->Temp[f];  
+                        //IterationOfLastChange = Iteration;
+                        }
+            } 
+         //  }while (!Iteration);
+    }       
 }
+
 
 void SimulateNet(NET* Net, int* Input)
 {
@@ -163,7 +207,8 @@ int main(int argc, char** argv) {
     
   NET Net;
   int n;
-
+  
+  
   InitializeRandoms();
   GenerateNetwork(&Net);
   InitializeApplication(&Net);
