@@ -111,7 +111,6 @@ void GetOutput(NET* Net, int* Output)
     Output[i] = Net->Output[i];
   }
   WriteNet(Net);
- // printf("%i",Output[i]);
 }
 BOOL PropagateUnit(NET* Net, int i)
 {
@@ -132,13 +131,10 @@ BOOL PropagateUnit(NET* Net, int i)
       Changed = TRUE;
       
         Net->Output[i] = Out;
-         printf("%i", Out);
       }
   }
   }
       else{
-               // for (f=0;f<Net->Units;f++){
-               // Net->Temp[f]=Net->Output[f];}
                     for (f=0; f< N;  f++) {Sum=0;
                             for(j=0; j< N; j++) {
                                     Sum += Net->Weight[f][j] * Net->Output[j];
@@ -152,15 +148,11 @@ BOOL PropagateUnit(NET* Net, int i)
                             }
                     }  
                 }
-
-     for (f=0;f<Net->Units;f++){
-         //Net->Output[f]=Net->Temp[f];
-         printf("%i", Net->Output[f]);
          }
-          
+         return Changed; 
   }
-  return Changed;
-}
+  
+
 
 
 void PropagateNet(NET* Net)
@@ -177,18 +169,14 @@ void PropagateNet(NET* Net)
     }while (Iteration-IterationOfLastChange < 10*(Net->Units));
    }
     else{
-      // do{Iteration= FALSE;
           for(f=0;f<Net->Units;f++){
                Net->Temp[f]=Net->Output[f];
           }
              if (PropagateUnit(Net, N)){ 
-                // Iteration=TRUE;
                      for (f=0;f<Net->Units;f++){
                         Net->Output[f]=Net->Temp[f];  
-                        //IterationOfLastChange = Iteration;
                         }
             } 
-         //  }while (!Iteration);
     }       
 }
 

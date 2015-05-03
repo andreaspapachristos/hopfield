@@ -24,7 +24,7 @@ typedef int           INT;
 #define AND           &&
 #define OR               ||
 
-//εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
+
 
 #define LO                        -1
 #define HI                       +1
@@ -45,8 +45,8 @@ typedef struct {                          /* A NET:                             
         INT**         Weight;            /* - connection weights to ith unit      */
         INT*           Temp;
 } NET;
-bool  ASYNCHRONOUS=false;
-  //int temp[N];
+bool  ASYNCHRONOUS=false;   //εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
+
 
 CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
                                                      " O O O O O",
