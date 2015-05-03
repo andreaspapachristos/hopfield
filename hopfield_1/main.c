@@ -31,7 +31,7 @@ void InitializeApplication(NET* Net)
       }
     }
   }
-  ff = fopen("HOPFIELD1.txt", "w");
+  ff = fopen("HOPFIELD1-3-17.txt", "w");
 }
 
 
@@ -64,7 +64,7 @@ void GenerateNetwork(NET* Net)
   Net->Output    = (int*)  calloc(N, sizeof(int));
   Net->Threshold = (int*)  calloc(N, sizeof(int));
   Net->Weight    = (int**) calloc(N, sizeof(int*));
-  Net->Temp     = (int*) calloc(N,sizeof(int));
+  Net->Temp     = (int*) calloc(N,sizeof(int));     
   for (i=0; i<N; i++) {
     Net->Threshold[i] = 0;
     Net->Weight[i]    = (int*) calloc(N, sizeof(int));
@@ -112,6 +112,10 @@ void GetOutput(NET* Net, int* Output)
   }
   WriteNet(Net);
 }
+/*Εδώ αρχίζουν οι αλλαγές στον κώδικα.
+ * Αν έχει επιλεγεί Ασύγχρονη ενημέρωση, ο κώδικας δεν χρειάζεται καμμιά αλλαγή, τρέχει ο αρχικός  κώδικας
+ * Αν έχει επιλεγεί Σύγχρονη ενημέρωση, τότε "περνάμε" στο  else και εκτελείτε ο νέος κώδικας.
+ */
 BOOL PropagateUnit(NET* Net, int i)
 {
   int  j,f;
@@ -134,8 +138,16 @@ BOOL PropagateUnit(NET* Net, int i)
       }
   }
   }
+  /* Καταρχην ο υπολογισμός του διανύσματος εξόδου δεν χρησιμοποιεί την γεννήτρια τυχαίων αριθμών αφού θα χρησιμοποιηθεί ολόκληρος ο
+   * πίνακας βαρών για τον υπολογισμό του νέου διανύσματος εισόδου.
+   * Έτσι κάνω τον πολλαπλασιασμό της κάθε γραμμής του πίνακα βαρών με το εισερχόμενο διάνυσμα και την τιμή που προκύπτει την περνάμε
+   * σαν όρισμα στην συνάρτηση προσήμου (εδώ αν η τιμή της συνάρτησης είναι μηδέν η είσοδος μεταφέρεται στην έξοδο) , αλλάζω το flag Changed
+   * σε TRUE και καταχωρώ την αλλαγμένη τιμή στον προσωρινό πίνακα Temp
+  
+    */
       else{
-                    for (f=0; f< N;  f++) {Sum=0;
+                    for (f=0; f< N;  f++) {
+                        Sum=0;
                             for(j=0; j< N; j++) {
                                     Sum += Net->Weight[f][j] * Net->Output[j];
                                 }
@@ -152,7 +164,10 @@ BOOL PropagateUnit(NET* Net, int i)
          return Changed; 
   }
   
-
+/*
+ * Συνεχίζονται οι αλλαγές και σε αυτή την συνάρτηση.
+ * Το "μοντέλο" είναι το ίδιο με πριν, αν έχει επιλεγεί Ασύγχρονη ενημέρωση όλα κυλούν όπως πριν, αλλιώς περνάει στο else του κώδικα.
+ */
 
 
 void PropagateNet(NET* Net)
@@ -168,6 +183,9 @@ void PropagateNet(NET* Net)
       IterationOfLastChange = Iteration;
     }while (Iteration-IterationOfLastChange < 10*(Net->Units));
    }
+  /*Ξεκινάω με αρχικοποίηση του προσωρινού πίνακα Temp με τις τιμές του διανύσματος εισόδου.
+   * Αν η συνάρτηση PropagateUnit επιστρέψει TRUE τότε αντιγράφω στο διάνυσμα εισόδου Output τον προσωρινό πίνακα Temp.
+   */
     else{
           for(f=0;f<Net->Units;f++){
                Net->Temp[f]=Net->Output[f];
@@ -176,8 +194,8 @@ void PropagateNet(NET* Net)
                      for (f=0;f<Net->Units;f++){
                         Net->Output[f]=Net->Temp[f];  
                         }
-            } 
-    }       
+                } 
+            }       
 }
 
 

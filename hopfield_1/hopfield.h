@@ -7,8 +7,7 @@
 
 #ifndef HOPFIELD_H
 #define	HOPFIELD_H
-#include <stdio.h>
-#include<stdbool.h>
+#include <stdio.h>   
 #ifdef	__cplusplus
 
 extern "C" {
@@ -39,13 +38,13 @@ typedef int           INT;
 
 
 typedef struct {                          /* A NET:                                */
-        INT           Units;                 /* - number of units in this net         */
-        INT*          Output;             /* - output of ith unit                  */
-        INT*          Threshold;        /* - threshold of ith unit               */
-        INT**         Weight;            /* - connection weights to ith unit      */
-        INT*           Temp;
+        INT           Units;                  /* - number of units in this net         */
+        INT*          Output;               /* - output of ith unit                  */
+        INT*          Threshold;           /* - threshold of ith unit               */
+        INT**         Weight;               /* - connection weights to ith unit      */
+        INT*           Temp;                // ο πίνακας ιγα την αποθήκευση των αλλαγών στις τιμές των διανυσμάτων
 } NET;
-bool  ASYNCHRONOUS=false;   //εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
+BOOL  ASYNCHRONOUS=FALSE; //εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
 
 
 CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
