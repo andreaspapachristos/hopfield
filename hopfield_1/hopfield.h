@@ -42,9 +42,9 @@ typedef struct {                          /* A NET:                             
         INT*          Output;               /* - output of ith unit                  */
         INT*          Threshold;           /* - threshold of ith unit               */
         INT**         Weight;               /* - connection weights to ith unit      */
-        INT*           Temp;                // ο πίνακας ιγα την αποθήκευση των αλλαγών στις τιμές των διανυσμάτων
+        INT*           Temp;                // temporary saving table of vectors
 } NET;
-BOOL  ASYNCHRONOUS=FALSE; //εδώ επιλέγουμε αν η ενημέρωση θα είναι σύγχρονη ή ασύγχρονη
+BOOL  ASYNCHRONOUS=FALSE; //choose sychronous-asychronous updating
 
 
 CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
