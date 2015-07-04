@@ -1,0 +1,2 @@
+# hopfield
+univercity homework
