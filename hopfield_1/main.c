@@ -3,6 +3,7 @@
  * Author: maria
  *
  * Created on 23 Απριλίου 2015, 11:13 μμ
+ * Το αρχέιο με τα patterns που γίνονται οι δοιμές έχουν περαστεί στο αρχέιο κεφαλίδας hopfield.h
  */
 
 #include "hopfield.h"
@@ -32,6 +33,7 @@ void InitializeApplication(NET* Net)
     }
   }
   ff = fopen("HOPFIELD1-3-17.txt", "w");
+  /*εδώ γραοουμε το όνομα του αρχείου που θα γίνει η έξοδος του αλγόριθμου*/
 }
 
 
