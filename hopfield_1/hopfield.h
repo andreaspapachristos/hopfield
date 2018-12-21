@@ -44,7 +44,7 @@ typedef struct {                          /* A NET:                             
         INT**         Weight;               /* - connection weights to ith unit      */
         INT*           Temp;                // temporary saving table of vectors
 } NET;
-BOOL  ASYNCHRONOUS=FALSE; //choose sychronous-asychronous updating
+BOOL  ASYNCHRONOUS=FALSE; //choose sychronous-asychronous updating, εδώ επιλέγουμε σύγχρονη η ασύγχρονη ενημέρωση
 
 
 CHAR                  Pattern[NUM_DATA][Y][X]  = { { "O O O O O ",
